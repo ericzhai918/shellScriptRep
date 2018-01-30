@@ -1,0 +1,9 @@
+---
+- hosts: mgmt_wgq
+  vars: 
+      test1: 我是熊大
+      test2: 我是熊二
+  tasks:    
+    - name: playbook template test
+      template: src=config/test_config.j2 dest=/data/app/app/test.conf
+
