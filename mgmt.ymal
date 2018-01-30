@@ -6,7 +6,15 @@
      - name: check the backup file
        shell: ls -lt /data/app/app/package
      - name: copy export.xml
-       copy: src=/data/app/deploy_prod/pkg/uab/20180130/mgmt/wgq/ dest=/data/app/app/apache-tomcat-8.5.23/webapps/
+       copy:
+         src: "{{ item.src }}"
+         dest: "{{ item.dest }}"
+       with_items:
+       - {
+         src: "/data/app/deploy_prod/pkg/uab/20180130/mgmt/wgq/",
+         dest: "/data/app/app/apache-tomcat-8.5.23/webapps/"
+         }
+
      - name: check the time of export.xml
        shell: ls -lt /data/app/app/apache-tomcat-8.5.23/webapps
 
