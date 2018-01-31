@@ -31,13 +31,16 @@ function backup(){
     ip=$1
     case ${ip} in
     "mgmt" )
-        ansible ${ip} -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && tar zcf /data/app/app/package/mgmt${timeStamp}.tgz mgmt && ls -lt /data/app/app/package/mgmt${timeStamp}.tgz" 
+        ansible ${ip}_wgq -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && tar zcf /data/app/app/package/mgmt${timeStamp}.tgz mgmt && ls -lt /data/app/app/package/mgmt${timeStamp}.tgz" 
+        ansible ${ip}_zp -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && tar zcf /data/app/app/package/mgmt${timeStamp}.tgz mgmt.war && ls -lt /data/app/app/package/mgmt${timeStamp}.tgz" 
 	;;
     "mweb" )
-	ansible ${ip} -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && tar zcf /data/app/app/package/mweb${timeStamp}.tgz mweb && ls -lt /data/app/app/package/mweb${timeStamp}.tgz"
+	ansible ${ip}_wgq -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && tar zcf /data/app/app/package/mweb${timeStamp}.tgz mweb && ls -lt /data/app/app/package/mweb${timeStamp}.tgz"
+	ansible ${ip}_zp -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && tar zcf /data/app/app/package/mweb${timeStamp}.tgz mweb.war && ls -lt /data/app/app/package/mweb${timeStamp}.tgz"
 	;;
     "paygate" )
-	ansible ${ip} -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && tar zcf /data/app/app/package/paygate${timeStamp}.tgz paygate && ls -lt /data/app/app/package/paygate${timeStamp}.tgz"
+	ansible ${ip}_wgq -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && tar zcf /data/app/app/package/paygate${timeStamp}.tgz paygate && ls -lt /data/app/app/package/paygate${timeStamp}.tgz"
+	ansible ${ip}_zp -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && tar zcf /data/app/app/package/paygate${timeStamp}.tgz paygate.war && ls -lt /data/app/app/package/paygate${timeStamp}.tgz"
 	;;
     "online" )
 	ansible ${ip} -m shell -a "cd /data/app/app && tar zcf /data/app/app/package/online${timeStamp}.tgz online && ls -lt /data/app/app/package/online${timeStamp}.tgz"
@@ -58,6 +61,30 @@ function checkBackup(){
     fi  
 }
 
+function deleteScrap(){
+    ip=$1
+    case ${ip} in
+    "mgmt" )
+        ansible ${ip} -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && rm -rf mgmt mgmt.war"
+        ;;
+    "mweb" )
+        ansible ${ip} -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && rm -rf mweb mweb.war"
+        ;;
+   "paygate" )
+        ansible ${ip} -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && rm -rf paygate paygate.war"
+        ;;
+   "online" )
+        ansible
+        ;;
+   "epay" )
+        ansible 
+        ;;
+    * )
+        echo "你输入的机器组不在host列表中"
+        ;;
+esac
+
+}
 function _copyFile(){
     ip=$1
     dfa=$2
@@ -65,6 +92,7 @@ function _copyFile(){
 	ansible ${ip}_${dfa} -m copy -a "src=/data/app/deploy_prod/pkg/uab/${today}/${ip}/${dfa}/ dest=/data/app/app/apache-tomcat-7.0.73/webapps/"
     elif [[ ${ip}="online" ]] || [[ ${ip}=="epay" ]]; then
 	ansible ${ip}_${dfa} -m copy -a "src=/data/app/deploy_prod/pkg/uab/${today}/${ip}/${dfa}/ dest=/data/app/app/"
+        ansible ${ip}_${dfa} -m shell -a "cd /data/app/app && tar xf ${ip}.tar"
     else
 	return 1
     fi
@@ -72,7 +100,7 @@ function _copyFile(){
 #传输文件
 function copyFile(){
     ip=$1
-    [ -z "$2"] && dfa="all" || dfa="$2"
+    [ -z "$2" ] && dfa="all" || dfa="$2"
     case ${dfa} in
     	"wgq" )
             _copyFile "${ip}" "wgq"
