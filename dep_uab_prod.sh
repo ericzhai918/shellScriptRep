@@ -115,7 +115,7 @@ function copyFile(){
     esac
 }
 #检查传输文件
-function checkCopy(){
+function checkFile(){
     ip=$1
     if [[ ${ip}=="mgmt" ]] || [[ ${ip}=="mweb" ]] || [[ ${ip}=="paygate" ]]; then
 	ansible ${ip} -m shell -a "ls -lt /data/app/app/apache-tomcat-7.0.73/webapps"
