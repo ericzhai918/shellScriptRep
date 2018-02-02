@@ -18,3 +18,8 @@ for a in $(cat a.txt); do
         fi
     done
 done
+
+#方法三
+for i in $(cat b.txt); do
+  grep "$i" a.txt
+done
