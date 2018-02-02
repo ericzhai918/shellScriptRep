@@ -13,3 +13,6 @@ ls -lSr
 ls -lt
 #按照文件更改时间列出文件（新在下）
 ls -ltr
+
+#显示文件的完整路径
+readlink -f file.txt
