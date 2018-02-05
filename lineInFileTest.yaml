@@ -1,0 +1,31 @@
+---
+- hosts: mgmt
+  tasks:    
+    - name: modify line
+      lineinfile:
+        dest: /data/app/app/hosts
+        regexp: '^10.20.0.81'
+        line: '10.20.0.81 eric081'
+
+    - name: insert before line
+      lineinfile: 
+        dest: /data/app/app/hosts
+        insertbefore: '^10.20.1.21'
+        line: 'my name is line.smith'
+
+    - name: insert after line
+      lineinfile:
+        dest: /data/app/app/hosts
+        insertafter: '^10.20.0.81'
+        line: 'my name is qiqi' 
+
+    - name: delete a line
+      lineinfile:
+        dest: /data/app/app/hosts
+        state: absent
+        regexp: '^10.20.1.21'
+
+    - name: add a line in the end
+      lineinfile:
+        dest: /data/app/app/hosts
+        line: 'add a line in the end'
