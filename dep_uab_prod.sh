@@ -74,7 +74,7 @@ function deleteScrap(){
         ansible ${ip} -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && rm -rf paygate paygate.war"
         ;;
    "online" )
-        ansible
+        #ansible ${ip} -m shell -a "cd /data/app/app && rm -rf online online.tar"
         ;;
    "epay" )
         ansible 
