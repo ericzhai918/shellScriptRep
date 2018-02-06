@@ -73,14 +73,8 @@ function deleteScrap(){
    "paygate" )
         ansible ${ip} -m shell -a "cd /data/app/app/apache-tomcat-7.0.73/webapps && rm -rf paygate paygate.war"
         ;;
-   "online" )
-        #ansible ${ip} -m shell -a "cd /data/app/app && rm -rf online online.tar"
-        ;;
-   "epay" )
-        ansible 
-        ;;
     * )
-        echo "你输入的机器组不在host列表中"
+        echo "没有相应的war包可删"
         ;;
 esac
 
