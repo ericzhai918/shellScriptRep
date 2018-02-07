@@ -25,3 +25,6 @@ rev filename.txt
 
 #火车头动画
 sl
+
+#小牛(其他动物)会说话
+cowsay
