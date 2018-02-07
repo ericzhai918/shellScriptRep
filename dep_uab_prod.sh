@@ -3,11 +3,11 @@ timeStamp=`date +%Y%m%d_%s`
 #停服
 function stopSystem(){
     ip=$1
-    if [[ ${ip}=="mgmt_wgq" ]] || [[ ${ip}=="mweb_wgq" ]] || [[ ${ip}=="paygate_wgq" ]]; then
+    if [ "${ip}" = "mgmt_wgq" ] || [ "${ip}" = "mweb_wgq" ] || [ "${ip}" = "paygate_wgq" ]; then
         ansible ${ip} -m shell -a "source /etc/profile && cd /data/app/app/apache-tomcat-7.0.73/bin && sh shutdown.sh "
-    elif [[ ${ip}="online_wgq" ]]; then
+    elif [ "${ip}" = "online_wgq" ]; then
     	ansible ${ip} -m shell -a "source /etc/profile && source /data/app/app/.bash_profile && cd /data/app/app/script && sh onlineshutdown.sh"
-    elif [[ ${ip}="10.20.44.81" ]]; then
+    elif [ "${ip}" = "10.20.44.81" ]; then
         ansible ${ip} -m shell -a "source /etc/profile && source /data/app/app/.bash_profile && cd /data/app/app/script/process && sh batchshutdown.sh"
     else
         return 1
@@ -56,7 +56,7 @@ esac
 #检查备份文件是否成功
 function checkBackup(){
     ip=$1
-    if [[ ${ip}=="mgmt" ]] || [[ ${ip}=="mweb" ]] || [[ ${ip}=="paygate" ]] || [[ ${ip}="online" ]] || [[ ${ip}=="epay" ]]; then
+    if [ "${ip}" = "mgmt" ] || [ "${ip}" = "mweb" ] || [ "${ip}" = "paygate" ] || [ "${ip}" = "online" ] || [ "${ip}" = "epay" ]; then
          ansible ${ip} -m shell -a "ls -lt /data/app/app/package"
     fi  
 }
@@ -77,16 +77,16 @@ function deleteScrap(){
         echo "没有相应的war包可删"
         ;;
 esac
-
 }
+
 function _copyFile(){
     ip=$1
     dfa=$2
-    if [[ ${ip}=="mgmt" ]] || [[ ${ip}=="mweb" ]] || [[ ${ip}=="paygate" ]]; then
+    if [ "${ip}" = "mgmt" ] || [ "${ip}" = "mweb" ] || [ "${ip}" = "paygate" ]; then
 	ansible ${ip}_${dfa} -m copy -a "src=/data/app/deploy_prod/pkg/uab/${today}/${ip}/${dfa}/ dest=/data/app/app/apache-tomcat-7.0.73/webapps/"
-    elif [[ ${ip}="online" ]] || [[ ${ip}=="epay" ]]; then
+    elif [ "${ip}" = "online" ] || [ "${ip}" = "epay" ]; then
 	ansible ${ip}_${dfa} -m copy -a "src=/data/app/deploy_prod/pkg/uab/${today}/${ip}/${dfa}/ dest=/data/app/app/"
-        ansible ${ip}_${dfa} -m shell -a "cd /data/app/app && tar xf ${ip}.tar"
+        #ansible ${ip}_${dfa} -m shell -a "cd /data/app/app && tar xf ${ip}.tar"
     else
 	return 1
     fi
@@ -111,9 +111,9 @@ function copyFile(){
 #检查传输文件
 function checkFile(){
     ip=$1
-    if [[ ${ip}=="mgmt" ]] || [[ ${ip}=="mweb" ]] || [[ ${ip}=="paygate" ]]; then
+    if [ "${ip}" = "mgmt" ] || [ "${ip}" = "mweb" ] || [ "${ip}" = "paygate" ]; then
 	ansible ${ip} -m shell -a "ls -lt /data/app/app/apache-tomcat-7.0.73/webapps"
-    elif [[ ${ip}="online" ]] || [[ ${ip}=="epay" ]]; then
+    elif [ "${ip}" = "online" ] || [ "${ip}" = "epay" ]; then
  	ansible ${ip} -m shell -a "ls -lt /data/app/app"
     else
 	return 1
@@ -122,11 +122,11 @@ function checkFile(){
 #启服
 function startSystem(){
     ip=$1
-    if [[ ${ip}=="mgmt_wgq" ]] || [[ ${ip}=="mweb_wgq" ]] || [[ ${ip}=="paygate_wgq" ]]; then
+    if [ "${ip}" = "mgmt_wgq" ] || [ "${ip}" = "mweb_wgq" ] || [ "${ip}" = "paygate_wgq" ]; then
         ansible ${ip} -m shell -a "source /etc/profile && cd /data/app/app/apache-tomcat-7.0.73/bin && nohup sh startup.sh &"
-    elif [[ ${ip}="online_wgq" ]]; then
+    elif [ "${ip}" = "online_wgq" ]; then
     	ansible ${ip} -m shell -a "source /etc/profile && source /data/app/app/.bash_profile && cd /data/app/app/script && nohup sh online.sh &"
-    elif [[ ${ip}="10.20.44.81" ]]; then
+    elif [ "${ip}" = "10.20.44.81" ]; then
         ansible ${ip} -m shell -a "source /etc/profile && source /data/app/app/.bash_profile && cd /data/app/app/script/process && nohup sh process.sh &"
     else
         return 1
