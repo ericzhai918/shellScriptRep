@@ -19,3 +19,6 @@ readlink -f file.txt
 
 #!$表示上一次使用的路径
 cd !$
+
+#反转文件内容
+rev filename.txt
