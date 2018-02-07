@@ -22,3 +22,6 @@ cd !$
 
 #反转文件内容
 rev filename.txt
+
+#火车头动画
+sl
