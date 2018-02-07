@@ -16,3 +16,6 @@ ls -ltr
 
 #显示文件的完整路径
 readlink -f file.txt
+
+#!$表示上一次使用的路径
+cd !$
