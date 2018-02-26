@@ -1,0 +1,16 @@
+
+---
+- hosts: mgmt
+
+  tasks:
+    - name: backup
+      shell: cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak 
+
+    - name: modify
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^#MaxStartups 10:30:100'
+        line: 'MaxStartups 100:30:1000'
+
+    - name: restart
+      shell: systemctl restart sshd
